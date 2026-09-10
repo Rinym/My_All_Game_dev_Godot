@@ -1,0 +1,256 @@
+[gd_scene format=3 uid="uid://btibobq5tkgxo"]
+
+[ext_resource type="PackedScene" uid="uid://dk8f6m5b8nnlq" path="res://Scenes/player_kuromi.tscn" id="1_io43w"]
+[ext_resource type="Script" uid="uid://3bsus63v6cq3" path="res://Scenes/main_2.gd" id="1_prdaa"]
+[ext_resource type="PackedScene" uid="uid://bygv8y6gxxrwl" path="res://Scenes/Base2.tscn" id="2_l14au"]
+[ext_resource type="PackedScene" uid="uid://bk5n0tn4k1l0c" path="res://Scenes/Coin.tscn" id="3_sc42d"]
+[ext_resource type="Script" uid="uid://duibbvusaxir2" path="res://Scripts/GameManager.gd" id="4_vlv8u"]
+[ext_resource type="Script" uid="uid://cl5pkvvg3xwyb" path="res://Scripts/DeadZone.gd" id="5_wjohi"]
+[ext_resource type="Script" uid="uid://pwcnppok2hf8" path="res://Scripts/GameUI.gd" id="6_ki8ox"]
+[ext_resource type="AudioStream" uid="uid://dwqthwejuljoq" path="res://Assets/Audio/SFX/Start2.mp3" id="8_l14au"]
+[ext_resource type="Texture2D" uid="uid://b5vp0wq8v5s32" path="res://Assets/Models/gobot/textures/Grass.png" id="8_prdaa"]
+[ext_resource type="PackedScene" uid="uid://ddkjp2fi3u4xt" path="res://Scenes/Enemy/Mymelody.tscn" id="9_io43w"]
+[ext_resource type="PackedScene" uid="uid://d0wdt3fca0044" path="res://Assets/gate.tscn" id="11_sc42d"]
+
+[sub_resource type="Environment" id="Environment_g4ka7"]
+background_mode = 1
+background_color = Color(0.62514323, 0.7886005, 0.91447353, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.662745, 0.694118, 0.772549, 1)
+tonemap_mode = 2
+tonemap_exposure = 0.75
+ssr_enabled = true
+ssao_enabled = true
+ssao_radius = 0.45
+ssao_intensity = 1.0
+ssao_power = 15.0
+ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_intensity = 2.0
+fog_light_color = Color(0.647059, 0.678431, 0.72549, 1)
+volumetric_fog_temporal_reprojection_enabled = false
+adjustment_brightness = 1.06
+adjustment_contrast = 0.95
+adjustment_saturation = 1.09
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_asf4q"]
+size = Vector3(288.76907, 13.643677, 376.72766)
+
+[sub_resource type="SystemFont" id="SystemFont_1ixsq"]
+font_names = PackedStringArray("Star Choco")
+multichannel_signed_distance_field = true
+
+[sub_resource type="SystemFont" id="SystemFont_656xb"]
+font_names = PackedStringArray("Star Choco")
+
+[sub_resource type="LabelSettings" id="LabelSettings_igq7x"]
+font = SubResource("SystemFont_656xb")
+font_size = 50
+font_color = Color(0.996094, 0.691406, 0.261719, 1)
+
+[node name="DemoScene" type="Node3D" unique_id=1898427731]
+script = ExtResource("1_prdaa")
+
+[node name="Player" parent="." unique_id=286668991 instance=ExtResource("1_io43w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.71563, 4.907277, 84.40001)
+
+[node name="Platforms" type="Node3D" parent="." unique_id=789356750]
+
+[node name="Environment" type="Node3D" parent="." unique_id=142788804]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1250431072]
+environment = SubResource("Environment_g4ka7")
+
+[node name="Base2" parent="Environment" unique_id=65302064 instance=ExtResource("2_l14au")]
+transform = Transform3D(50.64377, 0, 0, 0, 83.83463, 0, 0, 0, 74.11756, 0, 4.832592, 0)
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" parent="Environment/Base2" index="1" unique_id=1096847381]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999999, 0, -0.051112987, 0)
+
+[node name="CollisionShape3D" parent="Environment/Base2/StaticBody3D" index="0" unique_id=1225125405]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042846683, -0.22021575, -0.13027954)
+
+[node name="Extras" type="Node3D" parent="." unique_id=1448945502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.845648, 1.7778585, 16.347748)
+
+[node name="SpawnPosition" type="Marker3D" parent="Extras" unique_id=1308745374]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.616991, -1.7835023, 59.71299)
+
+[node name="Coins" type="Node3D" parent="." unique_id=1457086659]
+
+[node name="Coin" parent="Coins" unique_id=984871827 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.92374, -0.31382656, 64.55534)
+
+[node name="Coin2" parent="Coins" unique_id=1753410326 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.008373, 0.87032366, 54.039734)
+
+[node name="Coin3" parent="Coins" unique_id=820475054 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.65596, 0.87032366, 34.646023)
+
+[node name="Coin4" parent="Coins" unique_id=970167764 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9104404, 0.87032366, 54.722878)
+
+[node name="Coin5" parent="Coins" unique_id=1882693127 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.506004, 0.87032366, 54.722878)
+
+[node name="Coin6" parent="Coins" unique_id=1256405716 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.0845, 0, 0)
+
+[node name="Coin7" parent="Coins" unique_id=744193689 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.332756, 0, 0)
+
+[node name="Coin8" parent="Coins" unique_id=1664055468 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014518738, 0, 5.194124)
+
+[node name="Coin9" parent="Coins" unique_id=1499991953 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.22022, 0, -20.875177)
+
+[node name="Coin10" parent="Coins" unique_id=807204810 instance=ExtResource("3_sc42d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.09148, 0, -33.077595)
+
+[node name="GameManager" type="Node3D" parent="." unique_id=1349392817]
+script = ExtResource("4_vlv8u")
+
+[node name="DeadZone" type="Area3D" parent="." unique_id=157447687]
+script = ExtResource("5_wjohi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DeadZone" unique_id=1708910470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.427929, -18.337399, -29.320885)
+shape = SubResource("BoxShape3D_asf4q")
+
+[node name="UserInterface" type="CanvasLayer" parent="." unique_id=1606636672]
+
+[node name="GameUI" type="Control" parent="UserInterface" unique_id=301255002]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_ki8ox")
+
+[node name="CoinTexture" type="TextureRect" parent="UserInterface/GameUI" unique_id=1559923231]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 31.0
+offset_right = 122.0
+offset_bottom = 121.0
+texture = ExtResource("8_prdaa")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="CoinsLabel" type="Label" parent="UserInterface/GameUI" unique_id=1508596840]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 50.0
+offset_right = 193.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(0.996094, 0.710938, 0.261719, 1)
+theme_override_colors/font_outline_color = Color(0.644531, 0.410156, 0.1875, 1)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = SubResource("SystemFont_1ixsq")
+theme_override_font_sizes/font_size = 48
+text = "X 3"
+label_settings = SubResource("LabelSettings_igq7x")
+
+[node name="Start2" type="AudioStreamPlayer" parent="." unique_id=1544146754]
+stream = ExtResource("8_l14au")
+volume_db = -5.0
+autoplay = true
+
+[node name="Enemy" parent="." unique_id=369938083 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.28480536, 0, -0.9585854, 0, 1, 0, 0.9585854, 0, -0.28480536, 22.498112, 0.20277834, 56.59421)
+
+[node name="Enemy2" parent="." unique_id=672330359 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.28480536, 0, -0.9585854, 0, 1, 0, 0.9585854, 0, -0.28480536, 22.498112, 0.20277834, 84.92176)
+
+[node name="Enemy3" parent="." unique_id=210518490 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 60.510468, 0.20277834, -2.8036346)
+
+[node name="Enemy4" parent="." unique_id=1968443595 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 42.867653, 0.20277834, 19.35897)
+
+[node name="Enemy20" parent="." unique_id=510257382 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -17.08191, 0.20277834, -8.14661)
+
+[node name="Enemy21" parent="." unique_id=896539339 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 8.166916, 0.20277834, -54.50445)
+
+[node name="Enemy5" parent="." unique_id=1247629272 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 83.50872, 0.20277834, -2.7255402)
+
+[node name="Enemy6" parent="." unique_id=931705365 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 65.865906, 0.20277834, 19.437065)
+
+[node name="Enemy7" parent="." unique_id=1143370821 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 45.314293, 0.20277834, -2.7255402)
+
+[node name="Enemy8" parent="." unique_id=1115597321 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 27.671478, 0.20277834, 19.437065)
+
+[node name="Enemy9" parent="." unique_id=1940258969 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 7.9482384, 0.20277834, 39.471596)
+
+[node name="Enemy10" parent="." unique_id=622203795 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -9.694576, 0.20277834, 61.6342)
+
+[node name="Enemy11" parent="." unique_id=708216234 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 56.556053, 0.20277834, 48.80873)
+
+[node name="Enemy12" parent="." unique_id=1888250636 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 38.91324, 0.20277834, 70.97134)
+
+[node name="Enemy13" parent="." unique_id=2069205474 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 31.586517, 0.20277834, -77.18811)
+
+[node name="Enemy14" parent="." unique_id=1288556973 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 11.0349045, 0.20277834, -99.350716)
+
+[node name="Enemy15" parent="." unique_id=105924370 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -6.60791, 0.20277834, -77.18811)
+
+[node name="Enemy16" parent="." unique_id=635491313 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -26.33115, 0.20277834, -57.15358)
+
+[node name="Enemy17" parent="." unique_id=322864654 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -43.973965, 0.20277834, -34.990974)
+
+[node name="Enemy18" parent="." unique_id=1614301447 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 22.276665, 0.20277834, -47.816444)
+
+[node name="Enemy19" parent="." unique_id=117440964 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 4.63385, 0.20277834, -25.65384)
+
+[node name="Enemy22" parent="." unique_id=541026626 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -15.392153, 0.20277834, -25.65384)
+
+[node name="Enemy23" parent="." unique_id=105435871 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -15.392153, 0.20277834, -14.56)
+
+[node name="Enemy24" parent="." unique_id=191357584 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, 4.2721424, 0.20277834, -14.56)
+
+[node name="Enemy25" parent="." unique_id=1304717448 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -2.9884195, 0.20277834, -31.941952)
+
+[node name="Enemy26" parent="." unique_id=157936987 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -15.051619, 0.20277834, -31.941952)
+
+[node name="Enemy27" parent="." unique_id=1930352309 instance=ExtResource("9_io43w")]
+transform = Transform3D(-0.819844, 0, -0.5725869, 0, 1, 0, 0.5725869, 0, -0.819844, -4.388786, -0.42242956, -9.720425)
+
+[node name="Gate by Poly by Google - 9LXddGLPnRF" parent="." unique_id=802191859 instance=ExtResource("11_sc42d")]
+transform = Transform3D(0.36876366, 0, -0.92952317, 0, 1, 0, 0.92952317, 0, 0.36876366, -6.788519, -0.028965585, -22.048754)
+next_scene = "res://Scenes/Menu.tscn"
+required_score = 10
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1799788653]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.903923, 2.4154577, 75.49046)
+modulate = Color(0.78422886, 0.6407641, 0.9772342, 1)
+text = "Collect 10 grass to leave!!"
+font_size = 68
+
+[connection signal="body_entered" from="DeadZone" to="DeadZone" method="_on_body_entered"]
+
+[editable path="Environment/Base2"]

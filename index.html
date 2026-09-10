@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Game Development Portfolio | Thanyaphat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #fff3f7;
+            --card-bg: #ffffff;
+            --primary-pink: #ff8fab;
+            --deep-pink: #ff4d8d;
+            --soft-pink: #ffd6e4;
+            --lilac: #ffb3d1;
+            --text-color: #5c3a4c;
+            --text-muted: #b98aa0;
+            --cream: #fff9fb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Background Deco - soft blush blobs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -15%;
+            left: -10%;
+            width: 55%;
+            height: 55%;
+            background: radial-gradient(circle, rgba(255, 179, 209, 0.55) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -15%;
+            right: -10%;
+            width: 55%;
+            height: 55%;
+            background: radial-gradient(circle, rgba(255, 214, 228, 0.6) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+        }
+
+        /* floating sparkles / hearts */
+        .sparkle {
+            position: fixed;
+            color: var(--lilac);
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .sparkle.s1 { top: 8%; left: 6%; font-size: 1.6rem; animation-delay: 0s; }
+        .sparkle.s2 { top: 20%; right: 10%; font-size: 1.2rem; animation-delay: 1.5s; color: var(--deep-pink); }
+        .sparkle.s3 { bottom: 15%; left: 12%; font-size: 1.4rem; animation-delay: 3s; }
+        .sparkle.s4 { bottom: 30%; right: 6%; font-size: 1.1rem; animation-delay: 2s; color: var(--deep-pink); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(10deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .sparkle { animation: none; }
+        }
+
+        /* Header Style */
+        header {
+            text-align: center;
+            padding: 4rem 1rem 2rem 1rem;
+            position: relative;
+        }
+
+        .subtitle {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--deep-pink);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .subtitle i {
+            margin: 0 6px;
+        }
+
+        h1 {
+            font-family: 'Mali', cursive;
+            font-size: 2.7rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--deep-pink);
+            text-shadow: 2px 2px 0px var(--soft-pink);
+        }
+
+        .author {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .author i {
+            color: var(--primary-pink);
+        }
+
+        /* Main Container */
+        container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        /* Grid Layout */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* Card Style */
+        .lab-card {
+            background: var(--card-bg);
+            border: 2px solid var(--soft-pink);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 6px 18px rgba(255, 141, 176, 0.12);
+        }
+
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--lilac), var(--deep-pink));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-8px) rotate(-0.5deg);
+            border-color: var(--primary-pink);
+            box-shadow: 0 18px 30px rgba(255, 77, 141, 0.18);
+        }
+
+        .lab-card:hover::before {
+            opacity: 1;
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .lab-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--soft-pink);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-pink);
+            font-size: 1.4rem;
+        }
+
+        .lab-number {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--deep-pink);
+            background: var(--soft-pink);
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+
+        .lab-title {
+            font-family: 'Mali', cursive;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .lab-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Button Style */
+        .btn-view {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-pink), var(--deep-pink));
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            width: 100%;
+            margin-top: auto;
+            box-shadow: 0 6px 14px rgba(255, 77, 141, 0.35);
+        }
+
+        .btn-view:hover {
+            opacity: 0.92;
+            transform: scale(1.02);
+        }
+
+        /* Disabled / Coming Soon Card Style */
+        .lab-card.disabled {
+            opacity: 0.7;
+        }
+        .lab-card.disabled:hover {
+            transform: none;
+            border-color: var(--soft-pink);
+            box-shadow: 0 6px 18px rgba(255, 141, 176, 0.12);
+        }
+        .lab-card.disabled::before {
+            display: none;
+        }
+
+        .btn-disabled {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            background: var(--cream);
+            border: 2px dashed var(--soft-pink);
+            color: var(--text-muted);
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 30px;
+            width: 100%;
+            margin-top: auto;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--soft-pink);
+            background: rgba(255, 249, 251, 0.85);
+        }
+
+        footer i {
+            color: var(--deep-pink);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.1rem; }
+            header { padding: 2.5rem 1rem 1rem 1rem; }
+            container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <i class="fa-solid fa-heart sparkle s1"></i>
+    <i class="fa-solid fa-star sparkle s2"></i>
+    <i class="fa-solid fa-heart sparkle s3"></i>
+    <i class="fa-solid fa-star sparkle s4"></i>
+
+    <header>
+        <div class="subtitle"><i class="fa-solid fa-heart"></i>Course Assignments<i class="fa-solid fa-heart"></i></div>
+        <h1>Computer Game Development ⋆｡°✩</h1>
+        <div class="author">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span> ธัญภัทร ตังตระกูล</span>
+        </div>
+    </header>
+
+    <container>
+        <div class="lab-grid">
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <span class="lab-number">LAB 01</span>
+                </div>
+                <h2 class="lab-title">Png_animation</h2>
+                <p class="lab-desc">lab01</p>
+                <a href="lab01/lab01_new.html" class="btn-view">
+                    <span>เข้าชมผลงาน</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <span class="lab-number">LAB 02</span>
+                </div>
+                <h2 class="lab-title">ball and wall</h2>
+                <p class="lab-desc">lab02.1</p>
+                <a href="lab02-2.1/lab2_1.html" class="btn-view">
+                    <span>เข้าชมผลงาน</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <span class="lab-number">LAB 02</span>
+                </div>
+                <h2 class="lab-title">Hunter don't eat เอ้ย hit my cat !!</h2>
+                <p class="lab-desc">lab02.2</p>
+                <a href="lab02-2/lab2_2.html" class="btn-view">
+                    <span>เข้าชมผลงาน</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <span class="lab-number">LAB 04</span>
+                </div>
+                <h2 class="lab-title">การผจญภัยในฝันแสนสดใสของเจ้าหญิง</h2>
+                <p class="lab-desc">lab04</p>
+                <a href="kawaii-letter.html" class="btn-view">
+                    <span>เข้าชมผลงาน</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <span class="lab-number">First 3D Game</span>
+                </div>
+                <h2 class="lab-title">Kuromi Adventure</h2>
+                <p class="lab-desc">First 3D Game</p>
+                <a href="First_3d_game/index.html" target="_blank"  class="btn-view">
+                    <span>เข้าชมผลงาน</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+
+            <div class="lab-card disabled">
+                <div class="lab-header">
+                    <div class="lab-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                    <span class="lab-number">LAB 0</span>
+                </div>
+                <h2 class="lab-title">No data</h2>
+                <p class="lab-desc">No data (กำลังพัฒนา...)</p>
+                <div class="btn-disabled">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>ยังไม่เปิดใช้งาน</span>
+                </div>
+            </div>
+
+        </div>
+    </container>
+
+    <footer>
+        <p><i class="fa-solid fa-heart"></i> 2026 Computer Game Development |  ธัญภัทร ตังตระกูล <i class="fa-solid fa-heart"></i></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 04 — 2D Platformer Game | Thanyaphat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #fff3f7;
+            --card-bg: #ffffff;
+            --primary-pink: #ff8fab;
+            --deep-pink: #ff4d8d;
+            --soft-pink: #ffd6e4;
+            --lilac: #ffb3d1;
+            --text-color: #5c3a4c;
+            --text-muted: #b98aa0;
+            --cream: #fff9fb;
+            --code-bg: #fff0f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -15%; left: -10%;
+            width: 55%; height: 55%;
+            background: radial-gradient(circle, rgba(255, 179, 209, 0.5) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -15%; right: -10%;
+            width: 55%; height: 55%;
+            background: radial-gradient(circle, rgba(255, 214, 228, 0.55) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+        }
+
+        .sparkle {
+            position: fixed;
+            color: var(--lilac);
+            opacity: 0.45;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .sparkle.s1 { top: 8%; left: 5%; font-size: 1.5rem; }
+        .sparkle.s2 { top: 22%; right: 8%; font-size: 1.2rem; color: var(--deep-pink); animation-delay: 1.5s; }
+        .sparkle.s3 { bottom: 10%; left: 10%; font-size: 1.3rem; animation-delay: 3s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(10deg); }
+        }
+        @media (prefers-reduced-motion: reduce) { .sparkle { animation: none; } }
+
+        .page {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--card-bg);
+            border: 2px solid var(--soft-pink);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 26px rgba(255, 141, 176, 0.15);
+            margin-bottom: 2rem;
+        }
+
+        .eyebrow {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--deep-pink);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .eyebrow i { margin: 0 6px; }
+
+        h1 {
+            font-family: 'Mali', cursive;
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--deep-pink);
+            text-shadow: 2px 2px 0px var(--soft-pink);
+            margin-bottom: 0.7rem;
+        }
+
+        .author-line {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .author-line i { color: var(--primary-pink); }
+
+        /* Story card */
+        .story-card {
+            background: linear-gradient(135deg, var(--soft-pink), var(--cream));
+            border-radius: 20px;
+            padding: 1.5rem 1.75rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        .story-card .story-title {
+            font-family: 'Mali', cursive;
+            font-weight: 700;
+            color: var(--deep-pink);
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .story-card p { color: var(--text-color); font-size: 0.98rem; }
+        .story-card p + p { margin-top: 0.6rem; }
+
+        /* Section */
+        section {
+            background: var(--card-bg);
+            border: 2px solid var(--soft-pink);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 6px 18px rgba(255, 141, 176, 0.1);
+        }
+
+        .section-title {
+            font-family: 'Mali', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--deep-pink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+
+        .section-title .icon-badge {
+            width: 40px;
+            height: 40px;
+            background: var(--soft-pink);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-pink);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* Preview images */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .preview-grid img {
+            width: 100%;
+            border-radius: 16px;
+            border: 2px solid var(--soft-pink);
+            display: block;
+            box-shadow: 0 6px 14px rgba(255, 141, 176, 0.15);
+        }
+
+        .link-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .pill-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.7rem 1.4rem;
+            background: linear-gradient(135deg, var(--primary-pink), var(--deep-pink));
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.92rem;
+            box-shadow: 0 6px 14px rgba(255, 77, 141, 0.3);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .pill-link:hover { transform: scale(1.03); opacity: 0.92; }
+        .pill-link.outline {
+            background: var(--cream);
+            color: var(--deep-pink);
+            border: 2px solid var(--soft-pink);
+            box-shadow: none;
+        }
+
+        /* Feature list */
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 0.9rem;
+        }
+        .feature-list li {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+            padding: 0.9rem 1rem;
+            background: var(--code-bg);
+            border-radius: 14px;
+            border: 1px solid var(--soft-pink);
+        }
+        .feature-list li i {
+            color: var(--deep-pink);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        .feature-list strong { color: var(--deep-pink); }
+
+        /* Ordered steps */
+        .step-list {
+            list-style: none;
+            counter-reset: step;
+            display: grid;
+            gap: 0.8rem;
+        }
+        .step-list li {
+            counter-increment: step;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        .step-list li::before {
+            content: counter(step);
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--deep-pink);
+            color: #fff;
+            font-weight: 700;
+            font-family: 'Prompt', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .step-list li a { color: var(--deep-pink); font-weight: 600; }
+
+        /* Code block */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--soft-pink);
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--soft-pink);
+        }
+        th {
+            background: var(--soft-pink);
+            color: var(--deep-pink);
+            font-weight: 700;
+        }
+        tr:last-child td { border-bottom: none; }
+        td code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--deep-pink);
+        }
+
+        /* Inspector tips / saving */
+        .tip-list {
+            list-style: none;
+            display: grid;
+            gap: 0.7rem;
+        }
+        .tip-list li {
+            padding-left: 1.6rem;
+            position: relative;
+            color: var(--text-color);
+        }
+        .tip-list li::before {
+            content: '\f4be';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--deep-pink);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 0.85rem;
+        }
+        .tip-list code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--deep-pink);
+        }
+        .tip-list a { color: var(--deep-pink); }
+
+        /* Credits */
+        .credit-group { margin-bottom: 1.1rem; }
+        .credit-group:last-child { margin-bottom: 0; }
+        .credit-heading {
+            font-family: 'Mali', cursive;
+            font-weight: 700;
+            color: var(--deep-pink);
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .credit-group ul { list-style: none; }
+        .credit-group li { margin-bottom: 0.25rem; }
+        .credit-group a { color: var(--text-color); text-decoration: none; border-bottom: 1px dashed var(--primary-pink); }
+        .credit-group a:hover { color: var(--deep-pink); }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        footer i { color: var(--deep-pink); }
+
+        /* Exit button */
+        .exit-btn {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.6rem 1.3rem;
+            background: linear-gradient(135deg, #ffffff, var(--soft-pink));
+            color: var(--deep-pink);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: 2px solid var(--primary-pink);
+            border-radius: 30px;
+            box-shadow: 0 6px 16px rgba(255, 141, 176, 0.3);
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, background 0.25s ease;
+        }
+        .exit-btn i {
+            color: var(--deep-pink);
+            transition: transform 0.25s ease;
+        }
+        .exit-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: linear-gradient(135deg, var(--primary-pink), var(--deep-pink));
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(255, 77, 141, 0.4);
+        }
+        .exit-btn:hover i {
+            color: #fff;
+            transform: scale(1.2);
+        }
+        @media (max-width: 600px) {
+            .exit-btn {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.82rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.9rem; }
+            .hero { padding: 2rem 1.3rem; }
+            section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <i class="fa-solid fa-heart sparkle s1"></i>
+    <i class="fa-solid fa-star sparkle s2"></i>
+    <i class="fa-solid fa-heart sparkle s3"></i>
+    <a href="index.html" class="exit-btn"><i class="fa-solid fa-heart"></i>Exit</a>
+
+    <div class="page">
+
+        <div class="hero">
+            <div class="eyebrow"><i class="fa-solid fa-heart"></i>Game Lab 4<i class="fa-solid fa-heart"></i></div>
+            <h1>2D Platformer Game ⋆｡°✩</h1>
+            <div class="author-line">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>By Thanyaphat Thungtakoon</span>
+            </div>
+
+            <div class="story-card">
+                <div class="story-title"><i class="fa-solid fa-book-open"></i>Game Story</div>
+                <p>เจ้าหญิงตื่นขึ้นมากลางความฝันและต้องหาทางหนีออกจากมันให้ได้ ผู้เล่นต้องต่อสู้กับเหล่ามอนสเตอร์ หลบหลีกกับดัก และค่อยๆ ปะติดปะต่อเรื่องราวผ่านแต่ละด่าน</p>
+                <div class="story-title" style="margin-top:0.9rem;"><i class="fa-solid fa-palette"></i>Game Style</div>
+                <p>เกมพิกเซลอาร์ต 2 มิติ พื้นหลังและเสียงประกอบน่ารักสดใส ผสมกับเนื้อเรื่องที่มีทั้งด้านมืดและด้านสว่าง พร้อมเกมเพลย์แบบคลาสสิก</p>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-gamepad"></i></span>2D Platformer Starter Kit</h2>
+            <p>ชุดเริ่มต้นนี้รวบรวมกลไกพื้นฐานที่จำเป็นสำหรับการสร้างเกม 2D Platformer แบบครบวงจรด้วย Godot 4.7 ออกแบบมาเป็นสื่อการเรียนรู้แบบลงมือทำสำหรับนักศึกษาในรายวิชา <strong style="color:var(--deep-pink)">Computer Game Development</strong> คณะวิทยาการคอมพิวเตอร์ มหาวิทยาลัยขอนแก่น</p>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-images"></i></span>Preview</h2>
+            <div class="preview-grid">
+                <img src="lab04/GameLab4/docs/demo1.png" alt="Gameplay preview 1">
+                <img src="lab04/GameLab4/docs/demo22.png" alt="Gameplay preview 2">
+            </div>
+            <div class="link-row">
+                <a href="https://github.com/Rinym/GameLab4" class="pill-link outline"><i class="fa-brands fa-github"></i>GitHub</a>
+                <a href="lab04/GameLab4/docs/index.html" target="_blank" class="pill-link"><i class="fa-solid fa-play"></i>Play Game</a>
+                <a href="https://youtu.be/oh7uzKjm_wA?si=W7L77D9mOKN3dbOl" target="_blank" class="pill-link outline"><i class="fa-brands fa-youtube"></i>Game Video</a>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-list-check"></i></span>Features</h2>
+            <ul class="feature-list">
+                <li><i class="fa-solid fa-house"></i><span><strong>Game Menu</strong> — เมนูหลักแบบง่าย (<code>Menu.tscn</code>) พร้อมปุ่ม Start และ Exit</span></li>
+                <li><i class="fa-solid fa-mobile-screen"></i><span><strong>Mobile & Web Design</strong> — มีปุ่มควบคุมบนหน้าจอ เล่นได้ทั้งมือถือ แท็บเล็ต และเบราว์เซอร์</span></li>
+                <li><i class="fa-solid fa-person-running"></i><span><strong>Platformer Controller</strong> — การเคลื่อนที่และกระโดดแบบ responsive รองรับ double jump ปรับค่าได้จาก Inspector</span></li>
+                <li><i class="fa-solid fa-fire"></i><span><strong>Weapon System</strong> — ยิงลูกไฟที่มีฟิสิกส์เด้งได้ กำจัดศัตรูและเพิ่มคะแนน</span></li>
+                <li><i class="fa-solid fa-ghost"></i><span><strong>Enemy AI</strong> — ศัตรูเดินลาดตระเวน กลับทิศเมื่อชนกำแพง และตรวจจับผู้เล่นด้วย raycasting</span></li>
+                <li><i class="fa-solid fa-shuffle"></i><span><strong>Enemy Spawner</strong> — สุ่มสร้างศัตรูตามเวลา ปรับความเร็ว ดีเลย์ และจำนวนสูงสุดได้</span></li>
+                <li><i class="fa-solid fa-person-walking"></i><span><strong>Animated Player</strong> — แอนิเมชัน idle, walk, jump, attack พร้อม sprite flip อัตโนมัติ</span></li>
+                <li><i class="fa-solid fa-wand-sparkles"></i><span><strong>Particle Effects</strong> — เอฟเฟกต์วิ่ง ระเบิดตอนตาย และแฟลชแดงเมื่อโดนโจมตี</span></li>
+                <li><i class="fa-solid fa-heart-pulse"></i><span><strong>Damage & Health System</strong> — โดนศัตรูแล้วมี knockback และช่วง invincibility แสดง HP bar และจำนวนชีวิต</span></li>
+                <li><i class="fa-solid fa-floppy-disk"></i><span><strong>Save & Load</strong> — บันทึกตำแหน่ง คะแนน ชีวิต และการตั้งค่าเป็นไฟล์ JSON</span></li>
+                <li><i class="fa-solid fa-volume-high"></i><span><strong>Sound & Music Toggle</strong> — บันทึกการตั้งค่าเสียงถาวร พร้อมปุ่ม mute/unmute</span></li>
+                <li><i class="fa-solid fa-coins"></i><span><strong>Score System</strong> — เก็บเหรียญหรือกำจัดศัตรูเพื่อเพิ่มคะแนน อัปเดตแบบเรียลไทม์</span></li>
+                <li><i class="fa-solid fa-map"></i><span><strong>Demo Levels</strong> — ด่านตัวอย่าง 2 ด่านที่ค่อยๆ เพิ่มความท้าทาย</span></li>
+                <li><i class="fa-solid fa-door-open"></i><span><strong>Level Management</strong> — เปลี่ยนฉากอย่างลื่นไหลด้วย autoload transition manager</span></li>
+                <li><i class="fa-solid fa-code"></i><span><strong>Beginner-Friendly Code</strong> — ทุกสคริปต์มีคอมเมนต์ อ่านง่าย แก้ไขและต่อยอดได้สะดวก</span></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-flag-checkered"></i></span>Getting Started</h2>
+            <ol class="step-list">
+                <li>เปิดโปรเจกต์ใน <a href="https://godotengine.org/" target="_blank">Godot 4.7</a> หรือใหม่กว่า</li>
+                <li>กด <strong>F5</strong> หรือคลิก <strong>Play</strong> เพื่อเข้าสู่เมนูหลัก</li>
+                <li>ใช้ <strong>A/D</strong> หรือ <strong>ลูกศรซ้าย/ขวา</strong> เพื่อเดิน กด <strong>Space</strong> เพื่อกระโดด และ <strong>X</strong> เพื่อยิง</li>
+                <li>บนมือถือหรือเว็บ ใช้ปุ่มควบคุมที่แสดงด้านล่างหน้าจอ</li>
+                <li>เก็บเหรียญ กำจัดศัตรู หลบกับดัก แล้วไปถึงประตูเพื่อจบแต่ละด่าน</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-folder-tree"></i></span>Project Structure</h2>
+            <pre>Scenes/
+├── Actors/           # Player, enemies, and spawners
+├── Levels/           # Level scenes, base level template, and UI
+├── Managers/         # GameManager, SceneTransition, AudioManager
+└── Prefabs/          # Reusable objects (bullet, coin, potion, door, button)
+
+Assets/
+├── Fonts/            # Custom fonts
+├── Icons/            # UI icons
+├── Sound/            # BGM and SFX
+├── Spritesheet/      # Character and tile sprites
+└── Textures/         # Particle and effect textures</pre>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-keyboard"></i></span>Controls</h2>
+            <table>
+                <thead>
+                    <tr><th>Input</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>A</code> / Left Arrow</td><td>Move left</td></tr>
+                    <tr><td><code>D</code> / Right Arrow</td><td>Move right</td></tr>
+                    <tr><td><code>Space</code> / <code>S</code></td><td>Jump</td></tr>
+                    <tr><td><code>X</code></td><td>Shoot</td></tr>
+                    <tr><td>On-screen buttons</td><td>Mobile and web touch controls</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-sliders"></i></span>Inspector Tips</h2>
+            <ul class="tip-list">
+                <li><strong>Player</strong>: เปิด <code>double_jump</code> เพื่อใช้กระโดดสองครั้ง ปรับ <code>move_speed</code>, <code>jump_force</code>, <code>shoot_cooldown_time</code> และ <code>bullet_lifetime</code> ได้ใน Inspector</li>
+                <li><strong>Enemy Spawner</strong>: ตั้งค่า <code>enemy_scenes</code>, <code>speed_range</code>, <code>respawn_time</code> และ <code>max_instance</code> เพื่อควบคุมพฤติกรรมและความหนาแน่นของศัตรู</li>
+                <li><strong>Bullet</strong>: ปรับ <code>speed</code> และ <code>lifetime</code> เพื่อเปลี่ยนความรู้สึกของกระสุน</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-cloud-arrow-up"></i></span>Saving</h2>
+            <ul class="tip-list">
+                <li>กดปุ่ม <strong>Save</strong> ที่มุมขวาบนเพื่อบันทึกความคืบหน้า</li>
+                <li>เกมจะบันทึกตำแหน่งผู้เล่น คะแนน จำนวนชีวิต และการตั้งค่าเสียง</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="icon-badge"><i class="fa-solid fa-hands-holding-heart"></i></span>Credits</h2>
+
+            <div class="credit-group">
+                <div class="credit-heading"><i class="fa-solid fa-user-pen"></i>Original Developer</div>
+                <ul>
+                    <li><a href="https://github.com/AdilDevStuff" target="_blank">AdilDevStuff</a> — <a href="https://github.com/AdilDevStuff/2D-Platformer-Starter-Kit" target="_blank">2D-Platformer-Starter-Kit</a></li>
+                </ul>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-heading"><i class="fa-solid fa-images"></i>2D Assets</div>
+                <ul>
+                    <li><a href="https://www.kenney.nl/" target="_blank">Kenney.nl</a></li>
+                    <li><a href="https://craftpix.net/" target="_blank">craftpix.net</a></li>
+                    <li><a href="https://ravenmore.itch.io/" target="_blank">Ravenmore</a></li>
+                    <li><a href="https://icons8.com" target="_blank">Icons8.com</a></li>
+                </ul>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-heading"><i class="fa-solid fa-volume-high"></i>Sound Effects</div>
+                <ul>
+                    <li>GDFXR (Sfxr plugin for Godot)</li>
+                </ul>
+            </div>
+
+            <div class="credit-group">
+                <div class="credit-heading"><i class="fa-solid fa-graduation-cap"></i>Modified for Educational Use By</div>
+                <ul>
+                    <li>College of Computing, Khon Kaen University</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><i class="fa-solid fa-heart"></i> Game Lab 4 · 2D Platformer Game <i class="fa-solid fa-heart"></i></p>
+    </footer>
+
+</body>
+</html>

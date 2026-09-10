@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://d0wdt3fca0044"]
+
+[ext_resource type="PackedScene" uid="uid://b5ypyqinhhtq3" path="res://Assets/Models/Gate by Poly by Google - 9LXddGLPnRF.glb" id="1_06s8m"]
+[ext_resource type="Script" uid="uid://cnu1ltx8f3ajf" path="res://Assets/gate.gd" id="2_vh5hm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4v7s"]
+size = Vector3(1.2510986, 5, 9)
+
+[node name="Gate by Poly by Google - 9LXddGLPnRF" unique_id=802191859 instance=ExtResource("1_06s8m")]
+script = ExtResource("2_vh5hm")
+
+[node name="Area3D" type="Area3D" parent="." index="1" unique_id=1603689235]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=811778360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033569336, 2, 0)
+shape = SubResource("BoxShape3D_g4v7s")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
