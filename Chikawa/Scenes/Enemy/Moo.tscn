@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://cxdmykij7iog"]
+
+[ext_resource type="Script" uid="uid://dtevrydmy8hog" path="res://Scenes/Enemy/moo.gd" id="1_rnyae"]
+[ext_resource type="PackedScene" uid="uid://deyfmi017p5br" path="res://Assets/Models/Cow by Quaternius - 26zM1outCr.glb" id="2_470tw"]
+[ext_resource type="Script" uid="uid://c2p768n24ki81" path="res://Scenes/Enemy/kILL.gd" id="2_vqmsr"]
+[ext_resource type="ArrayMesh" uid="uid://deu06eho4c74" path="res://Assets/Resources/cloud.res" id="3_ni2aq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oo8ef"]
+radius = 0.7685547
+height = 2.993164
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_02pkc"]
+diffuse_mode = 2
+specular_mode = 2
+metallic_specular = 0.0
+
+[sub_resource type="Curve" id="Curve_ooin1"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.236318, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_g4v7s"]
+height = 0.36114502
+radius = 0.48486328
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d0u6y"]
+albedo_color = Color(0.6375517, 2.3223088e-06, 2.8878452e-07, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yf5fn"]
+top_radius = 0.5261914
+bottom_radius = 0.5411914
+height = 0.361
+
+[node name="Enemy" type="CharacterBody3D" unique_id=369938083]
+script = ExtResource("1_rnyae")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=168588563]
+script = ExtResource("2_vqmsr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=489847479]
+transform = Transform3D(0.07658291, 0, 0.9970632, 0.99705505, 0.004035776, -0.07658228, -0.004023924, 0.99999183, 0.00030907147, -0.000624448, 0.98953897, -0.00332153)
+shape = SubResource("CapsuleShape3D_oo8ef")
+
+[node name="gobot" type="Node3D" parent="." unique_id=927801049]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+
+[node name="Root Scene" parent="gobot" unique_id=11344046 instance=ExtResource("2_470tw")]
+transform = Transform3D(0.46017233, 0, 0, 0, 0.29837573, 0, 0, 0, 0.30794853, 0, 0, 0)
+
+[node name="Skeleton3D" parent="gobot/Root Scene/RootNode/AnimalArmature" parent_id_path=PackedInt32Array(11344046, 1567330581) index="0" unique_id=1426782447]
+bones/5/rotation = Quaternion(0.2385001, 1.5863787e-06, -7.5125075e-07, 0.9711425)
+bones/8/rotation = Quaternion(-0.51698464, -1.0522961e-05, -5.6578738e-06, 0.8559947)
+bones/10/rotation = Quaternion(0.75148463, 0.6590212, 0.020446686, 0.02331998)
+bones/11/rotation = Quaternion(1.8676614e-07, 0.9958918, 0.090552054, 2.290007e-06)
+bones/12/rotation = Quaternion(0.4639712, 0.52904046, 0.5341938, -0.46849114)
+bones/13/rotation = Quaternion(0.75148433, -0.6590216, -0.02044929, 0.023315927)
+bones/14/rotation = Quaternion(-1.8543305e-07, 0.99589103, 0.09055965, -2.2898887e-06)
+bones/15/rotation = Quaternion(0.611788, 0.5590543, 0.38339126, -0.4076578)
+bones/16/rotation = Quaternion(0.7261497, 0.671056, 0.10155705, 0.10989469)
+bones/18/rotation = Quaternion(-3.5653133e-07, 0.8925826, -0.45088395, 1.0751975e-06)
+bones/19/rotation = Quaternion(0.61178744, -0.5590551, -0.38339245, -0.40765655)
+bones/20/rotation = Quaternion(0.72614926, -0.6710565, -0.10155696, 0.10989443)
+bones/21/rotation = Quaternion(0.5208392, 2.0750832e-07, -1.5024875e-07, 0.8536548)
+bones/22/rotation = Quaternion(3.8139484e-07, 0.8925824, -0.4508843, -1.0877576e-06)
+bones/26/rotation = Quaternion(-0.1978819, 1.2204383e-07, -3.250002e-08, 0.980226)
+bones/27/rotation = Quaternion(0.019453336, -1.2527703e-07, 8.385007e-09, 0.99981076)
+bones/28/rotation = Quaternion(0.03361007, -6.9258346e-09, 7.0015247e-09, 0.99943507)
+bones/29/rotation = Quaternion(0.014858697, -9.411421e-09, 9.662731e-09, 0.9998896)
+
+[node name="Head" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="0" unique_id=162837262]
+transform = Transform3D(-1, -2.246452e-09, 1.3487534e-06, -9.261994e-07, -0.72578824, -0.6879178, 9.804608e-07, -0.6879177, 0.72578835, -2.8708427e-10, -0.03983126, 0.038519483)
+
+[node name="FrontLowerLeg_L" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="1" unique_id=565651007]
+transform = Transform3D(-0.99999964, -3.145832e-07, 9.007275e-06, -8.908883e-06, 0.11903165, -0.9928905, -6.684406e-07, -0.992889, -0.11903153, 0.006114667, -0.02012692, 0.01178486)
+
+[node name="FrontLowerLeg_R" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="2" unique_id=427443884]
+transform = Transform3D(-1.0000001, -2.048018e-06, -6.14069e-07, 3.8755297e-07, 0.11904941, -0.99288833, 2.0814211e-06, -0.9928884, -0.11904937, -0.0061146766, -0.020126889, 0.011784851)
+
+[node name="BackLowerLeg_L" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="3" unique_id=826251037]
+transform = Transform3D(-0.99990946, 0.004048668, 0.012866104, -0.013309249, -0.14132711, -0.98987335, -0.0021894563, -0.9899543, 0.14136809, 0.0056607584, 0.025388453, 0.013250957)
+
+[node name="BackLowerLeg_R" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="4" unique_id=976058266]
+transform = Transform3D(-0.99990946, -0.004050269, -0.012866283, 0.01330961, -0.14132676, -0.9898735, 0.0021912078, -0.9899535, 0.141368, -0.0056607877, 0.025388466, 0.013250972)
+
+[node name="Tail7" parent="gobot/Root Scene/RootNode/AnimalArmature/Skeleton3D" index="5" unique_id=349972853]
+transform = Transform3D(1, -2.4326988e-08, -2.3441014e-08, 2.4938883e-08, 0.06337869, 0.9979923, -2.2797941e-08, -0.99800014, 0.06336811, 2.7066185e-10, 0.029030744, 0.024144018)
+
+[node name="AnimationPlayer" parent="gobot/Root Scene" index="1" unique_id=1939590755]
+autoplay = &"AnimalArmature|Eating"
+
+[node name="ParticleTrail" type="CPUParticles3D" parent="." unique_id=878555570]
+visible = false
+material_override = SubResource("StandardMaterial3D_02pkc")
+amount = 30
+mesh = ExtResource("3_ni2aq")
+emission_shape = 1
+emission_sphere_radius = 0.2
+particle_flag_align_y = true
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0.1, 0)
+scale_amount_min = 0.75
+scale_amount_curve = SubResource("Curve_ooin1")
+
+[node name="AttackArea" type="Area3D" parent="." unique_id=1739410249]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea" unique_id=206834094]
+transform = Transform3D(9.579011, 0, 0, 0, 1, 0, 0, 0, 9.461109, 0, 0.18478394, 0)
+shape = SubResource("CylinderShape3D_g4v7s")
+
+[node name="AttackIndicator" type="MeshInstance3D" parent="." unique_id=599165762]
+transform = Transform3D(8.844271, 0, 0, 0, 0.9301572, 0, 0, 0, 8.840021, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_d0u6y")
+transparency = 0.53
+mesh = SubResource("CylinderMesh_yf5fn")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+
+[editable path="gobot/Root Scene"]

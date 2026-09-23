@@ -1,0 +1,11 @@
+Model Information:
+* title:	My Melody from sanrio japan
+* source:	https://sketchfab.com/3d-models/my-melody-from-sanrio-japan-c472021f1c8c4882947a3debe86402f0
+* author:	TV Animations Cyprus (https://sketchfab.com/www.giorgos.com.cy)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "My Melody from sanrio japan" (https://sketchfab.com/3d-models/my-melody-from-sanrio-japan-c472021f1c8c4882947a3debe86402f0) by TV Animations Cyprus (https://sketchfab.com/www.giorgos.com.cy) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

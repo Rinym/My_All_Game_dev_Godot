@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cdwp0y828sa3m"]
+
+[ext_resource type="PackedScene" uid="uid://bfj2lja0r483e" path="res://Assets/Models/Forest by Alex Safayan - 2roPjnG73zv.glb" id="1_k3wfs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yf5fn"]
+size = Vector3(2.7633057, 0.3271103, 1.1613498)
+
+[node name="Forest by Alex Safayan - 2roPjnG73zv" unique_id=1176722175 instance=ExtResource("1_k3wfs")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="97" unique_id=1241635154]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1358379611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0881958, -0.03472519, 0.822793)
+shape = SubResource("BoxShape3D_yf5fn")
+debug_color = Color(0.99999994, 0.37583217, 0.21353212, 0.41960785)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" index="1" unique_id=644820941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0881958, -0.03472519, -0.79265094)
+shape = SubResource("BoxShape3D_yf5fn")
+debug_color = Color(0.99999994, 0.37583217, 0.21353212, 0.41960785)

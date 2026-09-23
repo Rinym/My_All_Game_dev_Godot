@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cav0wa4m4p0pi"
+path="res://.godot/imported/Start first.mp3-2da5b0665e31b129b27f61ec523e8148.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/SFX/Start first.mp3"
+dest_files=["res://.godot/imported/Start first.mp3-2da5b0665e31b129b27f61ec523e8148.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
